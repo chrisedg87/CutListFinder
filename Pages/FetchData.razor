@@ -1,0 +1,50 @@
+﻿@page "/findcuts"
+
+<PageTitle>Find Cuts</PageTitle>
+
+@inherits FetchDataBase
+@using CutListFinder.Data
+@using CutListFinder.Models
+@inject WeatherForecastService ForecastService
+
+<h1>Cut List Finder</h1>
+
+<form action="" Model="@cutListForm">
+    <div class="mb-3">
+        <label class="form-label">Stock Length (mm)</label>
+        <input type="text" class="form-control" placeholder="2400" @bind-value="cutListForm.StockLength">
+    </div>
+
+     <div class="mb-3">
+        <label class="form-label">Required Lengths</label>
+        @for (int i = 0; i < cutListForm.Lengths.Count; i++)
+        {
+            var local = i;
+            <input type="text" class="form-control mb-2" placeholder="0" @bind-value="cutListForm.Lengths[local]">
+            @* <button class="btn btn-outline-danger" @onclick="() => RemoveLength(local)" >Remove</button> *@
+        }
+       
+    </div>
+</form>
+
+@* @stockLength *@
+
+<button class="btn btn-outline-primary me-2" @onclick="AddLength">Add</button>
+<button class="btn btn-primary" @onclick="RunPermute">Run</button>
+
+@if (bestCombination == null)
+{
+    <p>Empty</p>
+}
+else 
+{
+    <p>Count - @bestCombination.Count</p>
+    @foreach (var item in bestCombination)
+    {
+        <li>@string.Join(",", item)</li>
+    }
+
+    <div style="display: flex; background: red; height: 100px" width="@stock px" height="100px"> 
+&nbsp;
+    </div>
+}
